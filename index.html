@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>MEXO Wallet Connect</title>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 
@@ -57,7 +58,6 @@
             margin-bottom: 18px;
         }
 
-        /* Disconnect button */
         #disconnect-button {
             display: none;
             margin: 0 auto 25px;
@@ -74,7 +74,6 @@
             background: #444444;
         }
 
-        /* Security box */
         .security {
             border: 2px solid #f1c40f;
             border-radius: 14px;
@@ -82,9 +81,7 @@
             margin-bottom: 25px;
             font-size: 14px;
             line-height: 1.5;
-
             color: #eeeeee;
-
             animation: securityLight 2s infinite;
         }
 
@@ -96,7 +93,6 @@
         }
 
         @keyframes securityLight {
-
             0% {
                 border-color: #f1c40f;
                 box-shadow: 0 0 8px #f1c40f;
@@ -232,6 +228,9 @@
             document.getElementById("disconnect-button");
 
 
+        let walletConnected = false;
+
+
         tonConnectUI.onStatusChange(function(wallet) {
 
             if (wallet && wallet.account) {
@@ -245,6 +244,28 @@
                 disconnectButton.style.display =
                     "block";
 
+                walletConnected = true;
+
+
+                /*
+                 * Return to Telegram after
+                 * successful wallet connection.
+                 */
+
+                setTimeout(function() {
+
+                    if (
+                        window.Telegram &&
+                        Telegram.WebApp
+                    ) {
+
+                        Telegram.WebApp.close();
+
+                    }
+
+                }, 800);
+
+
             } else {
 
                 status.textContent =
@@ -256,6 +277,8 @@
                 disconnectButton.style.display =
                     "none";
 
+                walletConnected = false;
+
             }
 
         });
@@ -266,6 +289,8 @@
             async function() {
 
                 try {
+
+                    walletConnected = false;
 
                     await tonConnectUI.disconnect();
 
@@ -280,6 +305,22 @@
 
             }
         );
+
+
+        /*
+         * Initialize Telegram WebApp
+         */
+
+        if (
+            window.Telegram &&
+            Telegram.WebApp
+        ) {
+
+            Telegram.WebApp.ready();
+
+            Telegram.WebApp.expand();
+
+        }
 
     </script>
 
