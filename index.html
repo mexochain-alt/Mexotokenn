@@ -6,131 +6,160 @@
 
     <title>MEXO Wallet Connect</title>
 
-    <script src="https://unpkg.com/@tonconnect/ui@3.0.0/dist/tonconnect-ui.min.js"></script>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
             background: #111111;
             color: #ffffff;
             font-family: Arial, sans-serif;
+
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .box {
+        .container {
             width: 90%;
-            max-width: 420px;
+            max-width: 430px;
             text-align: center;
             padding: 30px 20px;
         }
 
         h1 {
-            margin-bottom: 10px;
+            font-size: 42px;
+            margin: 0 0 12px;
         }
 
-        .status {
-            margin: 25px 0;
-            padding: 15px;
+        .subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        #ton-connect {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
             background: #1d1d1d;
-            border-radius: 12px;
-            word-break: break-all;
+            border-radius: 16px;
+            padding: 22px 18px;
+            margin-top: 18px;
         }
 
         .label {
             color: #999999;
-            font-size: 13px;
-            margin-bottom: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
         }
 
-        #wallet-address {
-            font-size: 14px;
+        .value {
+            font-size: 16px;
+            word-break: break-all;
         }
     </style>
 </head>
 
 <body>
 
-<div class="box">
+    <div class="container">
 
-    <h1>MEXO</h1>
+        <h1>MEXO</h1>
 
-    <p>Connect your TON wallet</p>
-
-    <div id="ton-connect"></div>
-
-    <div class="status">
-
-        <div class="label">
-            WALLET STATUS
+        <div class="subtitle">
+            Connect your TON wallet
         </div>
 
-        <div id="wallet-status">
-            Not connected
+        <!-- TON Connect Button -->
+        <div id="ton-connect"></div>
+
+        <!-- Connection Status -->
+        <div class="card">
+
+            <div class="label">
+                WALLET STATUS
+            </div>
+
+            <div
+                class="value"
+                id="wallet-status">
+                Not connected
+            </div>
+
+        </div>
+
+        <!-- Wallet Address -->
+        <div class="card">
+
+            <div class="label">
+                WALLET ADDRESS
+            </div>
+
+            <div
+                class="value"
+                id="wallet-address">
+                —
+            </div>
+
         </div>
 
     </div>
 
-    <div class="status">
 
-        <div class="label">
-            WALLET ADDRESS
-        </div>
+    <script>
 
-        <div id="wallet-address">
-            —
-        </div>
-
-    </div>
-
-</div>
+        const MANIFEST_URL =
+            "https://mexochain-alt.github.io/Mexotokenn/tonconnect-manifest.json";
 
 
-<script>
+        const tonConnectUI =
+            new TON_CONNECT_UI.TonConnectUI({
 
-const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+                manifestUrl: MANIFEST_URL,
 
-    manifestUrl:
-        'https://mexochain-alt.github.io/mexotokenn/tonconnect-manifest.json',
+                buttonRootId: "ton-connect"
 
-    buttonRootId:
-        'ton-connect'
-
-});
+            });
 
 
-tonConnectUI.onStatusChange(function(wallet) {
+        tonConnectUI.onStatusChange(function(wallet) {
 
-    const statusElement =
-        document.getElementById('wallet-status');
+            const status =
+                document.getElementById("wallet-status");
 
-    const addressElement =
-        document.getElementById('wallet-address');
+            const address =
+                document.getElementById("wallet-address");
 
 
-    if (wallet && wallet.account) {
+            if (wallet && wallet.account) {
 
-        statusElement.textContent =
-            'Connected ✅';
+                status.textContent =
+                    "Connected ✅";
 
-        addressElement.textContent =
-            wallet.account.address;
+                address.textContent =
+                    wallet.account.address;
 
-    } else {
+            } else {
 
-        statusElement.textContent =
-            'Not connected';
+                status.textContent =
+                    "Not connected";
 
-        addressElement.textContent =
-            '—';
+                address.textContent =
+                    "—";
 
-    }
+            }
 
-});
+        });
 
-</script>
+    </script>
 
 </body>
 </html>
