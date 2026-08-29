@@ -19,7 +19,6 @@
             background: #111111;
             color: #ffffff;
             font-family: Arial, sans-serif;
-
             display: flex;
             align-items: center;
             justify-content: center;
@@ -32,27 +31,54 @@
             padding: 30px 20px;
         }
 
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 22px;
+            margin-bottom: 18px;
+        }
+
         h1 {
             font-size: 42px;
-            margin: 0 0 12px;
+            margin: 0 0 10px;
         }
 
         .subtitle {
             font-size: 18px;
-            margin-bottom: 30px;
+            color: #dddddd;
+            margin-bottom: 28px;
         }
 
         #ton-connect {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+        }
+
+        .security {
+            background: #181818;
+            border: 1px solid #292929;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #bbbbbb;
+        }
+
+        .security strong {
+            display: block;
+            color: #ffffff;
+            font-size: 15px;
+            margin-bottom: 5px;
         }
 
         .card {
             background: #1d1d1d;
             border-radius: 16px;
-            padding: 22px 18px;
-            margin-top: 18px;
+            padding: 20px 18px;
+            margin-top: 16px;
         }
 
         .label {
@@ -72,16 +98,25 @@
 
     <div class="container">
 
+        <img
+            class="logo"
+            src="https://mexochain-alt.github.io/Mexotokenn/logo.png"
+            alt="MEXO">
+
         <h1>MEXO</h1>
 
         <div class="subtitle">
             Connect your TON wallet
         </div>
 
-        <!-- TON Connect Button -->
         <div id="ton-connect"></div>
 
-        <!-- Connection Status -->
+        <div class="security">
+            <strong>🔒 Secure Connection</strong>
+            Your wallet connection is handled securely by TON Connect.
+            MEXO never asks for your recovery phrase or private key.
+        </div>
+
         <div class="card">
 
             <div class="label">
@@ -96,7 +131,6 @@
 
         </div>
 
-        <!-- Wallet Address -->
         <div class="card">
 
             <div class="label">
@@ -113,12 +147,10 @@
 
     </div>
 
-
     <script>
 
         const MANIFEST_URL =
             "https://mexochain-alt.github.io/Mexotokenn/tonconnect-manifest.json";
-
 
         const tonConnectUI =
             new TON_CONNECT_UI.TonConnectUI({
@@ -129,7 +161,6 @@
 
             });
 
-
         tonConnectUI.onStatusChange(function(wallet) {
 
             const status =
@@ -137,7 +168,6 @@
 
             const address =
                 document.getElementById("wallet-address");
-
 
             if (wallet && wallet.account) {
 
