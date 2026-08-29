@@ -16,9 +16,14 @@
             box-sizing: border-box;
         }
 
+        html,
         body {
             margin: 0;
-            min-height: 100vh;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
             background: #111111;
             color: #ffffff;
             font-family: Arial, sans-serif;
@@ -26,134 +31,133 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
+            overflow: hidden;
         }
 
         .container {
-            width: 90%;
-            max-width: 430px;
+            width: 92%;
+            max-width: 400px;
             text-align: center;
-            padding: 30px 20px;
+            padding: 12px 10px;
         }
 
         .logo {
-            width: 100px;
-            height: 100px;
+            width: 58px;
+            height: 58px;
             object-fit: contain;
-            border-radius: 22px;
-            margin-bottom: 18px;
+            border-radius: 15px;
+            margin-bottom: 6px;
         }
 
         h1 {
-            font-size: 42px;
-            margin: 0 0 10px;
+            font-size: 28px;
+            margin: 0 0 4px;
         }
 
         .subtitle {
-            font-size: 18px;
-            color: #dddddd;
-            margin-bottom: 28px;
+            font-size: 15px;
+            color: #cccccc;
+            margin-bottom: 12px;
         }
 
         #connect-button {
             width: 100%;
-            max-width: 280px;
-            padding: 15px 20px;
+            max-width: 260px;
+            padding: 12px 18px;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             background: #ffffff;
             color: #111111;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
 
         #connect-button:disabled {
             opacity: 0.6;
-            cursor: default;
         }
 
         #disconnect-button {
             display: none;
-            margin: 18px auto 25px;
-            padding: 12px 24px;
+            margin: 8px auto 10px;
+            padding: 8px 18px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             background: #333333;
             color: #ffffff;
-            font-size: 15px;
+            font-size: 13px;
             cursor: pointer;
         }
 
         .security {
-            border: 2px solid #f1c40f;
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 25px;
-            margin-bottom: 25px;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #eeeeee;
-
-            animation: securityLight 2s infinite;
+            border: 1px solid #f1c40f;
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin: 12px 0;
+            font-size: 11px;
+            line-height: 1.35;
+            color: #dddddd;
         }
 
         .security strong {
-            display: block;
             color: #ffffff;
-            font-size: 15px;
-            margin-bottom: 5px;
-        }
-
-        @keyframes securityLight {
-            0% {
-                border-color: #f1c40f;
-                box-shadow: 0 0 8px #f1c40f;
-            }
-
-            49% {
-                border-color: #f1c40f;
-                box-shadow: 0 0 8px #f1c40f;
-            }
-
-            50% {
-                border-color: #e53935;
-                box-shadow: 0 0 8px #e53935;
-            }
-
-            99% {
-                border-color: #e53935;
-                box-shadow: 0 0 8px #e53935;
-            }
-
-            100% {
-                border-color: #f1c40f;
-                box-shadow: 0 0 8px #f1c40f;
-            }
+            font-size: 12px;
         }
 
         .card {
             background: #1d1d1d;
-            border-radius: 16px;
-            padding: 20px 18px;
-            margin-top: 16px;
+            border-radius: 12px;
+            padding: 11px 12px;
+            margin-top: 8px;
         }
 
         .label {
-            color: #999999;
-            font-size: 14px;
-            margin-bottom: 10px;
+            color: #888888;
+            font-size: 11px;
+            margin-bottom: 5px;
         }
 
         .value {
-            font-size: 16px;
+            font-size: 14px;
             word-break: break-all;
+        }
+
+        #wallet-address {
+            color: #ffffff;
+            font-size: 12px;
+            line-height: 1.3;
+            margin-bottom: 9px;
+        }
+
+        #copy-button {
+            display: none;
+            width: 100%;
+            padding: 9px;
+            border: none;
+            border-radius: 9px;
+            background: #333333;
+            color: #ffffff;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #copy-button:active {
+            background: #444444;
+        }
+
+        #copy-message {
+            display: none;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #8cff8c;
         }
 
         #error {
             display: none;
-            margin-top: 15px;
+            margin-top: 8px;
             color: #ff6b6b;
-            font-size: 14px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -185,17 +189,11 @@
         Disconnect Wallet
     </button>
 
-    <div
-        id="error">
-    </div>
+    <div id="error"></div>
 
     <div class="security">
-
-        <strong>🔒 Secure Connection</strong>
-
-        Your wallet connection is handled securely by TON Connect.
-        MEXO never asks for your recovery phrase or private key.
-
+        <strong>🔒 Secure</strong><br>
+        Never share your recovery phrase or private key.
     </div>
 
     <div class="card">
@@ -222,6 +220,16 @@
             class="value"
             id="wallet-address">
             —
+        </div>
+
+        <button
+            id="copy-button"
+            type="button">
+            📋 Copy Wallet Address
+        </button>
+
+        <div id="copy-message">
+            ✅ Address copied!
         </div>
 
     </div>
@@ -268,9 +276,6 @@
 
             manifestUrl: MANIFEST_URL,
 
-            /*
-             * We use our own button.
-             */
             buttonRootId: null
 
         });
@@ -292,67 +297,120 @@
     const address =
         document.getElementById("wallet-address");
 
+    const copyButton =
+        document.getElementById("copy-button");
+
+    const copyMessage =
+        document.getElementById("copy-message");
+
     const errorBox =
         document.getElementById("error");
 
 
     /* ==========================================
-       HIDE ERROR
-       ========================================== */
-
-    function clearError() {
-
-        errorBox.style.display =
-            "none";
-
-        errorBox.textContent =
-            "";
-
-    }
-
-
-    /* ==========================================
-       SHOW ERROR
+       ERROR
        ========================================== */
 
     function showError(message) {
 
+        errorBox.textContent =
+            message;
+
         errorBox.style.display =
             "block";
 
+    }
+
+
+    function clearError() {
+
         errorBox.textContent =
-            message;
+            "";
+
+        errorBox.style.display =
+            "none";
 
     }
 
 
     /* ==========================================
-       CLOSE TELEGRAM MINI APP
+       COPY ADDRESS
        ========================================== */
 
-    function closeTelegramMiniApp() {
+    copyButton.addEventListener(
+        "click",
+        async function() {
 
-        if (!tg) {
-
-            return;
-
-        }
+            const walletAddress =
+                address.textContent.trim();
 
 
-        try {
+            if (
+                !walletAddress ||
+                walletAddress === "—"
+            ) {
 
-            tg.close();
+                return;
 
-        } catch (error) {
+            }
 
-            console.error(
-                "Telegram close error:",
-                error
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    walletAddress
+                );
+
+            } catch (error) {
+
+                /*
+                 * Fallback for browsers where
+                 * Clipboard API is unavailable.
+                 */
+
+                const textarea =
+                    document.createElement("textarea");
+
+                textarea.value =
+                    walletAddress;
+
+                textarea.style.position =
+                    "fixed";
+
+                textarea.style.opacity =
+                    "0";
+
+                document.body.appendChild(
+                    textarea
+                );
+
+                textarea.select();
+
+                document.execCommand(
+                    "copy"
+                );
+
+                textarea.remove();
+
+            }
+
+
+            copyMessage.style.display =
+                "block";
+
+
+            setTimeout(
+                function() {
+
+                    copyMessage.style.display =
+                        "none";
+
+                },
+                1800
             );
 
         }
-
-    }
+    );
 
 
     /* ==========================================
@@ -377,13 +435,6 @@
 
             try {
 
-                /*
-                 * IMPORTANT:
-                 *
-                 * Wait for the actual
-                 * ConnectedWallet result.
-                 */
-
                 const wallet =
                     await tonConnectUI.connectWallet();
 
@@ -397,32 +448,25 @@
                         "Connected ✅";
 
 
+                    /*
+                     * TON Connect provides the
+                     * connected wallet address here.
+                     */
+
                     address.textContent =
                         wallet.account.address;
 
 
                     disconnectButton.style.display =
-                        "block";
+                        "inline-block";
 
 
                     connectButton.style.display =
                         "none";
 
 
-                    /*
-                     * Connection is confirmed.
-                     *
-                     * Now close Telegram Mini App.
-                     */
-
-                    setTimeout(
-                        function() {
-
-                            closeTelegramMiniApp();
-
-                        },
-                        300
-                    );
+                    copyButton.style.display =
+                        "block";
 
                 }
 
@@ -444,11 +488,6 @@
                 connectButton.textContent =
                     "🔗 Connect Wallet";
 
-
-                /*
-                 * Do not show an error if
-                 * the user simply cancelled.
-                 */
 
                 if (
                     error &&
@@ -488,12 +527,16 @@
                     "—";
 
 
+                copyButton.style.display =
+                    "none";
+
+
                 disconnectButton.style.display =
                     "none";
 
 
                 connectButton.style.display =
-                    "block";
+                    "inline-block";
 
 
                 connectButton.disabled =
@@ -537,11 +580,15 @@
 
 
                 disconnectButton.style.display =
-                    "block";
+                    "inline-block";
 
 
                 connectButton.style.display =
                     "none";
+
+
+                copyButton.style.display =
+                    "block";
 
             }
 
