@@ -4,34 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEXO Airdrop</title>
-    <!-- TonConnect UI library -->
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <!-- Telegram WebApp library -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body { 
-            font-family: Arial, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             text-align: center; 
             padding: 20px; 
             background: #1a1a1a; 
             color: white; 
+            margin: 0;
+        }
+        .container {
+            margin-top: 40px;
+        }
+        /* استایل لوگو */
+        .logo {
+            width: 120px; /* سایز لوگو را می‌توانید اینجا تغییر دهید */
+            height: auto;
+            border-radius: 20px; /* اگر می‌خواهید گوشه‌های لوگو گرد باشد */
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3); /* یک سایه ملایم رنگی */
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #00e676; /* رنگ سبز متناسب با اکوسیستم TON */
+        }
+        p {
+            color: #b3b3b3;
+            margin-bottom: 30px;
         }
         #ton-connect-button { 
             display: flex; 
             justify-content: center; 
-            margin-top: 30px; 
+            margin-top: 20px; 
             min-height: 50px;
         }
     </style>
 </head>
 <body>
-    <h1>MEXO Airdrop</h1>
-    <p>Please connect your wallet to proceed</p>
-    
-    <div id="ton-connect-button"></div>
+    <div class="container">
+        <!-- نام فایل لوگو را دقیقاً همان چیزی بگذارید که در گیت‌هاب آپلود کردید -->
+        <img src="logo.png" alt="MEXO Logo" class="logo">
+        
+        <h1>MEXO Airdrop</h1>
+        <p>Please connect your wallet to proceed</p>
+        
+        <div id="ton-connect-button"></div>
+    </div>
 
     <script>
-        // Wait until the DOM is fully loaded before initializing
         document.addEventListener('DOMContentLoaded', () => {
             const tg = window.Telegram.WebApp;
             tg.expand();
