@@ -1,340 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>MEXO Wallet Connect</title>
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            margin: 0;
-            width: 100%;
-            min-height: 100%;
-        }
-
-        body {
-            background: #111111;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            overflow: hidden;
-        }
-
-        .container {
-            width: 92%;
-            max-width: 400px;
-            text-align: center;
-            padding: 14px 10px;
-        }
-
-        /* LOGO */
-
-        .logo {
-            width: 68px;
-            height: 68px;
-            object-fit: contain;
-            border-radius: 17px;
-            margin-bottom: 7px;
-        }
-
-        h1 {
-            font-size: 30px;
-            margin: 0 0 5px;
-        }
-
-        .subtitle {
-            font-size: 16px;
-            color: #cccccc;
-            margin-bottom: 14px;
-        }
-
-        /* CONNECT */
-
-        #connect-button {
-            width: 100%;
-            max-width: 270px;
-
-            padding: 13px 20px;
-
-            border: none;
-            border-radius: 12px;
-
-            background: #ffffff;
-            color: #111111;
-
-            font-size: 16px;
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-        #connect-button:disabled {
-            opacity: 0.6;
-        }
-
-        /* DISCONNECT */
-
-        #disconnect-button {
-            display: none;
-
-            margin: 9px auto 12px;
-
-            padding: 8px 18px;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #333333;
-            color: #ffffff;
-
-            font-size: 13px;
-
-            cursor: pointer;
-        }
-
-        /* SECURITY */
-
-        .security {
-            border: 1px solid #f1c40f;
-            border-radius: 10px;
-
-            padding: 9px 11px;
-
-            margin: 12px 0;
-
-            font-size: 13px;
-            line-height: 1.35;
-
-            color: #dddddd;
-
-            animation: securityPulse 2s infinite;
-        }
-
-        .security strong {
-            color: #ffffff;
-            font-size: 14px;
-        }
-
-        @keyframes securityPulse {
-
-            0%,
-            100% {
-                opacity: 1;
-                box-shadow: 0 0 8px #f1c40f;
-            }
-
-            50% {
-                opacity: 0.45;
-                box-shadow: 0 0 2px #f1c40f;
-            }
-        }
-
-        /* STATUS CARD */
-
-        .card {
-            background: #1d1d1d;
-
-            border-radius: 12px;
-
-            padding: 12px 13px;
-
-            margin-top: 8px;
-        }
-
-        .label {
-            color: #888888;
-
-            font-size: 12px;
-
-            margin-bottom: 5px;
-        }
-
-        .value {
-            font-size: 15px;
-
-            word-break: break-all;
-        }
-
-        /* GREEN MESSAGE */
-
-        .copy-instruction {
-            display: none;
-
-            background: #1f8f45;
-
-            color: #ffffff;
-
-            border-radius: 10px;
-
-            padding: 10px 11px;
-
-            margin: 9px 0;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
-            line-height: 1.35;
-        }
-
-        /* ADDRESS */
-
-        #wallet-address {
-            color: #ffffff;
-
-            font-size: 13px;
-
-            line-height: 1.35;
-
-            margin-bottom: 9px;
-        }
-
-        /* COPY */
-
-        #copy-button {
-            display: none;
-
-            width: 100%;
-
-            padding: 10px;
-
-            border: none;
-
-            border-radius: 9px;
-
-            background: #333333;
-
-            color: #ffffff;
-
-            font-size: 14px;
-
-            cursor: pointer;
-        }
-
-        #copy-message {
-            display: none;
-
-            margin-top: 6px;
-
-            font-size: 12px;
-
-            color: #8cff8c;
-        }
-
-        /* BACK TO BOT */
-
-        #back-button {
-            display: none;
-
-            width: 100%;
-
-            margin-top: 10px;
-
-            padding: 11px;
-
-            border: none;
-
-            border-radius: 10px;
-
-            background: #ffffff;
-
-            color: #111111;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-        /* ERROR */
-
-        #error {
-            display: none;
-
-            margin-top: 7px;
-
-            color: #ff6b6b;
-
-            font-size: 13px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MEXO Wallet Connect</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #111111;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 92%;
+    max-width: 430px;
+    text-align: center;
+    padding: 18px 15px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    border-radius: 18px;
+    margin-bottom: 8px;
+}
+
+h1 {
+    font-size: 34px;
+    margin: 0 0 6px;
+}
+
+.subtitle {
+    font-size: 17px;
+    color: #dddddd;
+    margin-bottom: 16px;
+}
+
+#ton-connect {
+    display: flex;
+    justify-content: center;
+}
+
+#connect-button {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 14px;
+    background: #ffffff;
+    color: #111111;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#disconnect-button {
+    display: none;
+    margin: 12px auto 15px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 12px;
+    background: #333333;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.card {
+    background: #1d1d1d;
+    border-radius: 14px;
+    padding: 13px 15px;
+    margin-top: 10px;
+}
+
+.label {
+    color: #999999;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.value {
+    font-size: 16px;
+    word-break: break-all;
+}
+
+.security {
+    border: 2px solid #f1c40f;
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+
+    animation: securityLight 2s infinite;
+}
+
+.security strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+@keyframes securityLight {
+
+    0%, 49% {
+        border-color: #f1c40f;
+        box-shadow: 0 0 7px #f1c40f;
+    }
+
+    50%, 99% {
+        border-color: #e53935;
+        box-shadow: 0 0 7px #e53935;
+    }
+
+    100% {
+        border-color: #f1c40f;
+        box-shadow: 0 0 7px #f1c40f;
+    }
+}
+
+.copy-box {
+    background: #1f8f4d;
+    border-radius: 14px;
+    padding: 12px;
+    margin-top: 10px;
+
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.copy-button {
+    margin-top: 8px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111111;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.back-button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 16px 20px;
+
+    border: none;
+    border-radius: 15px;
+
+    background: #ffffff;
+    color: #111111;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.back-button:active {
+    transform: scale(0.98);
+}
+
+#error {
+    display: none;
+    margin-top: 10px;
+    color: #ff6b6b;
+    font-size: 14px;
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- LOGO -->
-
     <img
         class="logo"
         src="https://mexochain-alt.github.io/Mexotokenn/logo.png"
         alt="MEXO">
 
-
     <h1>MEXO</h1>
-
 
     <div class="subtitle">
         Connect your TON wallet
     </div>
 
-
-    <!-- CONNECT BUTTON -->
-
     <button
         id="connect-button"
         type="button">
-
         🔗 Connect Wallet
-
     </button>
-
-
-    <!-- DISCONNECT -->
 
     <button
         id="disconnect-button"
         type="button">
-
         Disconnect Wallet
-
     </button>
-
-
-    <!-- ERROR -->
 
     <div id="error"></div>
 
-
-    <!-- SECURITY -->
-
     <div class="security">
 
-        <strong>🔒 Secure Connection</strong><br>
+        <strong>🔒 Secure Connection</strong>
 
-        Never share your recovery phrase or private key.
+        TON Connect is secure.
+        MEXO never asks for your recovery phrase or private key.
 
     </div>
-
-
-    <!-- STATUS -->
 
     <div class="card">
 
@@ -345,26 +235,29 @@
         <div
             class="value"
             id="wallet-status">
-
             Not connected
-
         </div>
 
     </div>
 
-
-    <!-- GREEN INSTRUCTION -->
-
     <div
-        class="copy-instruction"
-        id="copy-instruction">
+        id="copy-box"
+        class="copy-box"
+        style="display:none;">
 
-        📋 Copy your wallet address and paste it in the bot.
+        📋 Copy your wallet address
+        and paste it into the MEXO bot.
+
+        <br>
+
+        <button
+            id="copy-button"
+            class="copy-button"
+            type="button">
+            📋 Copy Address
+        </button>
 
     </div>
-
-
-    <!-- ADDRESS -->
 
     <div class="card">
 
@@ -375,39 +268,18 @@
         <div
             class="value"
             id="wallet-address">
-
             —
-
-        </div>
-
-
-        <!-- COPY -->
-
-        <button
-            id="copy-button"
-            type="button">
-
-            📋 Copy Wallet Address
-
-        </button>
-
-
-        <div id="copy-message">
-
-            ✅ Address copied!
-
         </div>
 
     </div>
 
-
-    <!-- BACK TO BOT -->
-
     <button
         id="back-button"
-        type="button">
+        class="back-button"
+        type="button"
+        style="display:none;">
 
-        ← Back to Bot
+        ⬅️ BACK TO BOT
 
     </button>
 
@@ -416,414 +288,347 @@
 
 <script>
 
-    /* ==========================================
-       TELEGRAM
-       ========================================== */
+/* ==========================================
+   TELEGRAM
+   ========================================== */
 
-    const tg =
-        window.Telegram &&
-        window.Telegram.WebApp
-            ? window.Telegram.WebApp
-            : null;
+const tg =
+    window.Telegram &&
+    window.Telegram.WebApp
+        ? window.Telegram.WebApp
+        : null;
+
+if (tg) {
+
+    try {
+        tg.ready();
+    } catch (e) {}
+
+    try {
+        tg.expand();
+    } catch (e) {}
+
+}
 
 
-    if (tg) {
+/* ==========================================
+   TON CONNECT
+   ========================================== */
+
+const MANIFEST_URL =
+    "https://mexochain-alt.github.io/Mexotokenn/tonconnect-manifest.json";
+
+const tonConnectUI =
+    new TON_CONNECT_UI.TonConnectUI({
+
+        manifestUrl: MANIFEST_URL
+
+    });
+
+
+/* ==========================================
+   ELEMENTS
+   ========================================== */
+
+const connectButton =
+    document.getElementById("connect-button");
+
+const disconnectButton =
+    document.getElementById("disconnect-button");
+
+const status =
+    document.getElementById("wallet-status");
+
+const address =
+    document.getElementById("wallet-address");
+
+const copyBox =
+    document.getElementById("copy-box");
+
+const copyButton =
+    document.getElementById("copy-button");
+
+const backButton =
+    document.getElementById("back-button");
+
+const errorBox =
+    document.getElementById("error");
+
+
+/* ==========================================
+   ERROR
+   ========================================== */
+
+function showError(text) {
+
+    errorBox.textContent = text;
+    errorBox.style.display = "block";
+
+}
+
+function clearError() {
+
+    errorBox.textContent = "";
+    errorBox.style.display = "none";
+
+}
+
+
+/* ==========================================
+   SHOW CONNECTED
+   ========================================== */
+
+function showConnected(wallet) {
+
+    if (!wallet || !wallet.account) {
+        return;
+    }
+
+    const walletAddress =
+        wallet.account.address;
+
+    status.textContent =
+        "Connected ✅";
+
+    address.textContent =
+        walletAddress;
+
+    connectButton.style.display =
+        "none";
+
+    disconnectButton.style.display =
+        "block";
+
+    copyBox.style.display =
+        "block";
+
+    backButton.style.display =
+        "block";
+
+}
+
+
+/* ==========================================
+   CONNECT
+   ========================================== */
+
+connectButton.addEventListener(
+    "click",
+    async function() {
+
+        clearError();
+
+        connectButton.disabled =
+            true;
+
+        connectButton.textContent =
+            "Connecting...";
+
+        status.textContent =
+            "Connecting...";
 
         try {
-            tg.ready();
-        } catch (e) {}
 
-        try {
-            tg.expand();
-        } catch (e) {}
+            const wallet =
+                await tonConnectUI.connectWallet();
 
-    }
+            if (wallet && wallet.account) {
 
+                showConnected(wallet);
 
-    /* ==========================================
-       TON CONNECT
-       ========================================== */
+            } else {
 
-    const MANIFEST_URL =
-        "https://mexochain-alt.github.io/Mexotokenn/tonconnect-manifest.json";
+                status.textContent =
+                    "Not connected";
 
+                connectButton.disabled =
+                    false;
 
-    const tonConnectUI =
-        new TON_CONNECT_UI.TonConnectUI({
+                connectButton.textContent =
+                    "🔗 Connect Wallet";
 
-            manifestUrl: MANIFEST_URL,
+            }
 
-            buttonRootId: null
+        } catch (error) {
 
-        });
+            console.error(
+                "Wallet connection error:",
+                error
+            );
 
+            status.textContent =
+                "Not connected";
 
-    /* ==========================================
-       ELEMENTS
-       ========================================== */
+            connectButton.disabled =
+                false;
 
-    const connectButton =
-        document.getElementById("connect-button");
-
-    const disconnectButton =
-        document.getElementById("disconnect-button");
-
-    const status =
-        document.getElementById("wallet-status");
-
-    const address =
-        document.getElementById("wallet-address");
-
-    const copyButton =
-        document.getElementById("copy-button");
-
-    const copyMessage =
-        document.getElementById("copy-message");
-
-    const copyInstruction =
-        document.getElementById("copy-instruction");
-
-    const backButton =
-        document.getElementById("back-button");
-
-    const errorBox =
-        document.getElementById("error");
-
-
-    /* ==========================================
-       ERROR
-       ========================================== */
-
-    function showError(message) {
-
-        errorBox.textContent =
-            message;
-
-        errorBox.style.display =
-            "block";
-
-    }
-
-
-    function clearError() {
-
-        errorBox.textContent =
-            "";
-
-        errorBox.style.display =
-            "none";
-
-    }
-
-
-    /* ==========================================
-       COPY WALLET ADDRESS
-       ========================================== */
-
-    copyButton.addEventListener(
-        "click",
-        async function() {
-
-            const walletAddress =
-                address.textContent.trim();
-
+            connectButton.textContent =
+                "🔗 Connect Wallet";
 
             if (
-                !walletAddress ||
-                walletAddress === "—"
+                error &&
+                error.message
             ) {
 
-                return;
+                showError(
+                    error.message
+                );
 
             }
 
+        }
 
-            try {
-
-                await navigator.clipboard.writeText(
-                    walletAddress
-                );
-
-            } catch (error) {
-
-                const textarea =
-                    document.createElement("textarea");
-
-                textarea.value =
-                    walletAddress;
-
-                textarea.style.position =
-                    "fixed";
-
-                textarea.style.opacity =
-                    "0";
-
-                document.body.appendChild(
-                    textarea
-                );
-
-                textarea.select();
-
-                document.execCommand(
-                    "copy"
-                );
-
-                textarea.remove();
-
-            }
+    }
+);
 
 
-            copyMessage.style.display =
-                "block";
+/* ==========================================
+   RESTORE CONNECTION
+   ========================================== */
 
+tonConnectUI.onStatusChange(
+    function(wallet) {
+
+        if (
+            wallet &&
+            wallet.account
+        ) {
+
+            showConnected(wallet);
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   COPY ADDRESS
+   ========================================== */
+
+copyButton.addEventListener(
+    "click",
+    async function() {
+
+        const walletAddress =
+            address.textContent;
+
+        if (
+            !walletAddress ||
+            walletAddress === "—"
+        ) {
+
+            return;
+
+        }
+
+        try {
+
+            await navigator.clipboard.writeText(
+                walletAddress
+            );
+
+            copyButton.textContent =
+                "✅ Copied!";
 
             setTimeout(
                 function() {
 
-                    copyMessage.style.display =
-                        "none";
+                    copyButton.textContent =
+                        "📋 Copy Address";
 
                 },
-                1800
+                1500
+            );
+
+        } catch (error) {
+
+            showError(
+                "Please copy the wallet address manually."
             );
 
         }
-    );
+
+    }
+);
 
 
-    /* ==========================================
-       BACK TO BOT
-       ========================================== */
+/* ==========================================
+   DISCONNECT
+   ========================================== */
 
-    backButton.addEventListener(
-        "click",
-        function() {
+disconnectButton.addEventListener(
+    "click",
+    async function() {
 
-            if (!tg) {
-                return;
-            }
+        try {
 
-            try {
-
-                tg.close();
-
-            } catch (error) {
-
-                console.error(
-                    "Telegram close error:",
-                    error
-                );
-
-            }
-
-        }
-    );
-
-
-    /* ==========================================
-       CONNECT WALLET
-       ========================================== */
-
-    connectButton.addEventListener(
-        "click",
-        async function() {
-
-            clearError();
-
-            connectButton.disabled =
-                true;
-
-            connectButton.textContent =
-                "Connecting...";
+            await tonConnectUI.disconnect();
 
             status.textContent =
-                "Connecting...";
+                "Not connected";
 
+            address.textContent =
+                "—";
 
-            try {
+            disconnectButton.style.display =
+                "none";
 
-                const wallet =
-                    await tonConnectUI.connectWallet();
+            copyBox.style.display =
+                "none";
 
+            backButton.style.display =
+                "none";
 
-                if (
-                    wallet &&
-                    wallet.account
-                ) {
+            connectButton.style.display =
+                "block";
 
-                    status.textContent =
-                        "Connected ✅";
+            connectButton.disabled =
+                false;
 
+            connectButton.textContent =
+                "🔗 Connect Wallet";
 
-                    address.textContent =
-                        wallet.account.address;
+        } catch (error) {
 
-
-                    disconnectButton.style.display =
-                        "inline-block";
-
-
-                    connectButton.style.display =
-                        "none";
-
-
-                    copyInstruction.style.display =
-                        "block";
-
-
-                    copyButton.style.display =
-                        "block";
-
-
-                    backButton.style.display =
-                        "block";
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Wallet connection error:",
-                    error
-                );
-
-
-                status.textContent =
-                    "Not connected";
-
-
-                connectButton.disabled =
-                    false;
-
-                connectButton.textContent =
-                    "🔗 Connect Wallet";
-
-
-                if (
-                    error &&
-                    error.message
-                ) {
-
-                    showError(
-                        error.message
-                    );
-
-                }
-
-            }
+            console.error(
+                "Disconnect error:",
+                error
+            );
 
         }
-    );
+
+    }
+);
 
 
-    /* ==========================================
-       DISCONNECT
-       ========================================== */
+/* ==========================================
+   BACK TO BOT
+   ========================================== */
 
-    disconnectButton.addEventListener(
-        "click",
-        async function() {
+backButton.addEventListener(
+    "click",
+    function() {
 
-            try {
+        if (!tg) {
+            return;
+        }
 
-                await tonConnectUI.disconnect();
+        try {
 
+            tg.close();
 
-                status.textContent =
-                    "Not connected";
+        } catch (error) {
 
-
-                address.textContent =
-                    "—";
-
-
-                copyInstruction.style.display =
-                    "none";
-
-
-                copyButton.style.display =
-                    "none";
-
-
-                copyMessage.style.display =
-                    "none";
-
-
-                backButton.style.display =
-                    "none";
-
-
-                disconnectButton.style.display =
-                    "none";
-
-
-                connectButton.style.display =
-                    "inline-block";
-
-
-                connectButton.disabled =
-                    false;
-
-                connectButton.textContent =
-                    "🔗 Connect Wallet";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Disconnect error:",
-                    error
-                );
-
-            }
+            console.error(
+                "Telegram close error:",
+                error
+            );
 
         }
-    );
 
-
-    /* ==========================================
-       RESTORE EXISTING CONNECTION
-       ========================================== */
-
-    tonConnectUI.onStatusChange(
-        function(wallet) {
-
-            if (
-                wallet &&
-                wallet.account
-            ) {
-
-                status.textContent =
-                    "Connected ✅";
-
-
-                address.textContent =
-                    wallet.account.address;
-
-
-                disconnectButton.style.display =
-                    "inline-block";
-
-
-                connectButton.style.display =
-                    "none";
-
-
-                copyInstruction.style.display =
-                    "block";
-
-
-                copyButton.style.display =
-                    "block";
-
-
-                backButton.style.display =
-                    "block";
-
-            }
-
-        }
-    );
+    }
+);
 
 </script>
 
