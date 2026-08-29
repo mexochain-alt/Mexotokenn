@@ -39,38 +39,47 @@
             width: 92%;
             max-width: 400px;
             text-align: center;
-            padding: 10px;
+            padding: 14px 10px;
         }
 
+        /* LOGO */
+
         .logo {
-            width: 55px;
-            height: 55px;
+            width: 68px;
+            height: 68px;
             object-fit: contain;
-            border-radius: 14px;
-            margin-bottom: 5px;
+            border-radius: 17px;
+            margin-bottom: 7px;
         }
 
         h1 {
-            font-size: 27px;
-            margin: 0 0 3px;
+            font-size: 30px;
+            margin: 0 0 5px;
         }
 
         .subtitle {
-            font-size: 14px;
+            font-size: 16px;
             color: #cccccc;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
         }
+
+        /* CONNECT */
 
         #connect-button {
             width: 100%;
-            max-width: 250px;
-            padding: 11px 18px;
+            max-width: 270px;
+
+            padding: 13px 20px;
+
             border: none;
-            border-radius: 11px;
+            border-radius: 12px;
+
             background: #ffffff;
             color: #111111;
-            font-size: 15px;
+
+            font-size: 16px;
             font-weight: bold;
+
             cursor: pointer;
         }
 
@@ -78,29 +87,39 @@
             opacity: 0.6;
         }
 
+        /* DISCONNECT */
+
         #disconnect-button {
             display: none;
-            margin: 7px auto 9px;
-            padding: 7px 17px;
+
+            margin: 9px auto 12px;
+
+            padding: 8px 18px;
+
             border: none;
-            border-radius: 9px;
+            border-radius: 10px;
+
             background: #333333;
             color: #ffffff;
-            font-size: 12px;
+
+            font-size: 13px;
+
             cursor: pointer;
         }
 
-        /* ==========================================
-           SECURITY BOX
-           ========================================== */
+        /* SECURITY */
 
         .security {
             border: 1px solid #f1c40f;
-            border-radius: 9px;
-            padding: 7px 9px;
-            margin: 10px 0;
-            font-size: 10px;
-            line-height: 1.3;
+            border-radius: 10px;
+
+            padding: 9px 11px;
+
+            margin: 12px 0;
+
+            font-size: 13px;
+            line-height: 1.35;
+
             color: #dddddd;
 
             animation: securityPulse 2s infinite;
@@ -108,7 +127,7 @@
 
         .security strong {
             color: #ffffff;
-            font-size: 11px;
+            font-size: 14px;
         }
 
         @keyframes securityPulse {
@@ -116,7 +135,7 @@
             0%,
             100% {
                 opacity: 1;
-                box-shadow: 0 0 7px #f1c40f;
+                box-shadow: 0 0 8px #f1c40f;
             }
 
             50% {
@@ -125,71 +144,84 @@
             }
         }
 
-        /* ==========================================
-           GREEN INSTRUCTION BOX
-           ========================================== */
+        /* STATUS CARD */
+
+        .card {
+            background: #1d1d1d;
+
+            border-radius: 12px;
+
+            padding: 12px 13px;
+
+            margin-top: 8px;
+        }
+
+        .label {
+            color: #888888;
+
+            font-size: 12px;
+
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 15px;
+
+            word-break: break-all;
+        }
+
+        /* GREEN MESSAGE */
 
         .copy-instruction {
             display: none;
 
             background: #1f8f45;
+
             color: #ffffff;
 
             border-radius: 10px;
 
-            padding: 8px 10px;
+            padding: 10px 11px;
 
-            margin: 8px 0;
+            margin: 9px 0;
 
-            font-size: 11px;
+            font-size: 14px;
+
             font-weight: bold;
 
-            line-height: 1.3;
+            line-height: 1.35;
         }
 
-        /* ==========================================
-           CARDS
-           ========================================== */
-
-        .card {
-            background: #1d1d1d;
-            border-radius: 11px;
-            padding: 9px 11px;
-            margin-top: 7px;
-        }
-
-        .label {
-            color: #888888;
-            font-size: 10px;
-            margin-bottom: 4px;
-        }
-
-        .value {
-            font-size: 13px;
-            word-break: break-all;
-        }
+        /* ADDRESS */
 
         #wallet-address {
             color: #ffffff;
-            font-size: 11px;
-            line-height: 1.25;
-            margin-bottom: 7px;
+
+            font-size: 13px;
+
+            line-height: 1.35;
+
+            margin-bottom: 9px;
         }
+
+        /* COPY */
 
         #copy-button {
             display: none;
 
             width: 100%;
 
-            padding: 8px;
+            padding: 10px;
 
             border: none;
-            border-radius: 8px;
+
+            border-radius: 9px;
 
             background: #333333;
+
             color: #ffffff;
 
-            font-size: 12px;
+            font-size: 14px;
 
             cursor: pointer;
         }
@@ -197,20 +229,49 @@
         #copy-message {
             display: none;
 
-            margin-top: 5px;
+            margin-top: 6px;
 
-            font-size: 10px;
+            font-size: 12px;
+
             color: #8cff8c;
         }
+
+        /* BACK TO BOT */
+
+        #back-button {
+            display: none;
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #111111;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        /* ERROR */
 
         #error {
             display: none;
 
-            margin-top: 6px;
+            margin-top: 7px;
 
             color: #ff6b6b;
 
-            font-size: 11px;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -219,30 +280,50 @@
 
 <div class="container">
 
+    <!-- LOGO -->
+
     <img
         class="logo"
         src="https://mexochain-alt.github.io/Mexotokenn/logo.png"
         alt="MEXO">
 
+
     <h1>MEXO</h1>
+
 
     <div class="subtitle">
         Connect your TON wallet
     </div>
 
+
+    <!-- CONNECT BUTTON -->
+
     <button
         id="connect-button"
         type="button">
+
         🔗 Connect Wallet
+
     </button>
+
+
+    <!-- DISCONNECT -->
 
     <button
         id="disconnect-button"
         type="button">
+
         Disconnect Wallet
+
     </button>
 
+
+    <!-- ERROR -->
+
     <div id="error"></div>
+
+
+    <!-- SECURITY -->
 
     <div class="security">
 
@@ -251,6 +332,9 @@
         Never share your recovery phrase or private key.
 
     </div>
+
+
+    <!-- STATUS -->
 
     <div class="card">
 
@@ -261,10 +345,13 @@
         <div
             class="value"
             id="wallet-status">
+
             Not connected
+
         </div>
 
     </div>
+
 
     <!-- GREEN INSTRUCTION -->
 
@@ -276,6 +363,9 @@
 
     </div>
 
+
+    <!-- ADDRESS -->
+
     <div class="card">
 
         <div class="label">
@@ -285,8 +375,13 @@
         <div
             class="value"
             id="wallet-address">
+
             —
+
         </div>
+
+
+        <!-- COPY -->
 
         <button
             id="copy-button"
@@ -296,11 +391,25 @@
 
         </button>
 
+
         <div id="copy-message">
+
             ✅ Address copied!
+
         </div>
 
     </div>
+
+
+    <!-- BACK TO BOT -->
+
+    <button
+        id="back-button"
+        type="button">
+
+        ← Back to Bot
+
+    </button>
 
 </div>
 
@@ -374,6 +483,9 @@
     const copyInstruction =
         document.getElementById("copy-instruction");
 
+    const backButton =
+        document.getElementById("back-button");
+
     const errorBox =
         document.getElementById("error");
 
@@ -405,7 +517,7 @@
 
 
     /* ==========================================
-       COPY ADDRESS
+       COPY WALLET ADDRESS
        ========================================== */
 
     copyButton.addEventListener(
@@ -480,6 +592,35 @@
 
 
     /* ==========================================
+       BACK TO BOT
+       ========================================== */
+
+    backButton.addEventListener(
+        "click",
+        function() {
+
+            if (!tg) {
+                return;
+            }
+
+            try {
+
+                tg.close();
+
+            } catch (error) {
+
+                console.error(
+                    "Telegram close error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+    /* ==========================================
        CONNECT WALLET
        ========================================== */
 
@@ -526,11 +667,15 @@
                         "none";
 
 
+                    copyInstruction.style.display =
+                        "block";
+
+
                     copyButton.style.display =
                         "block";
 
 
-                    copyInstruction.style.display =
+                    backButton.style.display =
                         "block";
 
                 }
@@ -592,11 +737,19 @@
                     "—";
 
 
+                copyInstruction.style.display =
+                    "none";
+
+
                 copyButton.style.display =
                     "none";
 
 
-                copyInstruction.style.display =
+                copyMessage.style.display =
+                    "none";
+
+
+                backButton.style.display =
                     "none";
 
 
@@ -629,7 +782,7 @@
 
 
     /* ==========================================
-       RESTORE CONNECTION
+       RESTORE EXISTING CONNECTION
        ========================================== */
 
     tonConnectUI.onStatusChange(
@@ -656,11 +809,15 @@
                     "none";
 
 
+                copyInstruction.style.display =
+                    "block";
+
+
                 copyButton.style.display =
                     "block";
 
 
-                copyInstruction.style.display =
+                backButton.style.display =
                     "block";
 
             }
