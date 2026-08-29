@@ -19,6 +19,7 @@
             background: #111111;
             color: #ffffff;
             font-family: Arial, sans-serif;
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,18 +54,38 @@
         #ton-connect {
             display: flex;
             justify-content: center;
-            margin-bottom: 25px;
+            margin-bottom: 18px;
         }
 
+        /* Disconnect button */
+        #disconnect-button {
+            display: none;
+            margin: 0 auto 25px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            background: #333333;
+            color: #ffffff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        #disconnect-button:hover {
+            background: #444444;
+        }
+
+        /* Security box */
         .security {
-            background: #181818;
-            border: 1px solid #292929;
+            border: 2px solid #f1c40f;
             border-radius: 14px;
             padding: 15px;
             margin-bottom: 25px;
             font-size: 14px;
             line-height: 1.5;
-            color: #bbbbbb;
+
+            color: #eeeeee;
+
+            animation: securityLight 2s infinite;
         }
 
         .security strong {
@@ -72,6 +93,34 @@
             color: #ffffff;
             font-size: 15px;
             margin-bottom: 5px;
+        }
+
+        @keyframes securityLight {
+
+            0% {
+                border-color: #f1c40f;
+                box-shadow: 0 0 8px #f1c40f;
+            }
+
+            49% {
+                border-color: #f1c40f;
+                box-shadow: 0 0 8px #f1c40f;
+            }
+
+            50% {
+                border-color: #e53935;
+                box-shadow: 0 0 8px #e53935;
+            }
+
+            99% {
+                border-color: #e53935;
+                box-shadow: 0 0 8px #e53935;
+            }
+
+            100% {
+                border-color: #f1c40f;
+                box-shadow: 0 0 8px #f1c40f;
+            }
         }
 
         .card {
@@ -111,10 +160,19 @@
 
         <div id="ton-connect"></div>
 
+        <button
+            id="disconnect-button"
+            type="button">
+            Disconnect Wallet
+        </button>
+
         <div class="security">
+
             <strong>🔒 Secure Connection</strong>
+
             Your wallet connection is handled securely by TON Connect.
             MEXO never asks for your recovery phrase or private key.
+
         </div>
 
         <div class="card">
@@ -147,10 +205,12 @@
 
     </div>
 
+
     <script>
 
         const MANIFEST_URL =
             "https://mexochain-alt.github.io/Mexotokenn/tonconnect-manifest.json";
+
 
         const tonConnectUI =
             new TON_CONNECT_UI.TonConnectUI({
@@ -161,13 +221,18 @@
 
             });
 
+
+        const status =
+            document.getElementById("wallet-status");
+
+        const address =
+            document.getElementById("wallet-address");
+
+        const disconnectButton =
+            document.getElementById("disconnect-button");
+
+
         tonConnectUI.onStatusChange(function(wallet) {
-
-            const status =
-                document.getElementById("wallet-status");
-
-            const address =
-                document.getElementById("wallet-address");
 
             if (wallet && wallet.account) {
 
@@ -177,6 +242,9 @@
                 address.textContent =
                     wallet.account.address;
 
+                disconnectButton.style.display =
+                    "block";
+
             } else {
 
                 status.textContent =
@@ -185,9 +253,33 @@
                 address.textContent =
                     "—";
 
+                disconnectButton.style.display =
+                    "none";
+
             }
 
         });
+
+
+        disconnectButton.addEventListener(
+            "click",
+            async function() {
+
+                try {
+
+                    await tonConnectUI.disconnect();
+
+                } catch (error) {
+
+                    console.error(
+                        "Disconnect error:",
+                        error
+                    );
+
+                }
+
+            }
+        );
 
     </script>
 
