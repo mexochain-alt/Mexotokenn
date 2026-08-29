@@ -54,15 +54,27 @@
             margin-bottom: 28px;
         }
 
-        #ton-connect {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 18px;
+        #connect-button {
+            width: 100%;
+            max-width: 280px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 14px;
+            background: #ffffff;
+            color: #111111;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #connect-button:disabled {
+            opacity: 0.6;
+            cursor: default;
         }
 
         #disconnect-button {
             display: none;
-            margin: 0 auto 25px;
+            margin: 18px auto 25px;
             padding: 12px 24px;
             border: none;
             border-radius: 12px;
@@ -72,14 +84,11 @@
             cursor: pointer;
         }
 
-        #disconnect-button:hover {
-            background: #444444;
-        }
-
         .security {
             border: 2px solid #f1c40f;
             border-radius: 14px;
             padding: 15px;
+            margin-top: 25px;
             margin-bottom: 25px;
             font-size: 14px;
             line-height: 1.5;
@@ -139,6 +148,13 @@
             font-size: 16px;
             word-break: break-all;
         }
+
+        #error {
+            display: none;
+            margin-top: 15px;
+            color: #ff6b6b;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -157,13 +173,21 @@
         Connect your TON wallet
     </div>
 
-    <div id="ton-connect"></div>
+    <button
+        id="connect-button"
+        type="button">
+        🔗 Connect Wallet
+    </button>
 
     <button
         id="disconnect-button"
         type="button">
         Disconnect Wallet
     </button>
+
+    <div
+        id="error">
+    </div>
 
     <div class="security">
 
@@ -208,7 +232,7 @@
 <script>
 
     /* ==========================================
-       TELEGRAM WEB APP
+       TELEGRAM
        ========================================== */
 
     const tg =
@@ -222,15 +246,11 @@
 
         try {
             tg.ready();
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) {}
 
         try {
             tg.expand();
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) {}
 
     }
 
@@ -248,7 +268,10 @@
 
             manifestUrl: MANIFEST_URL,
 
-            buttonRootId: "ton-connect"
+            /*
+             * We use our own button.
+             */
+            buttonRootId: null
 
         });
 
@@ -257,143 +280,191 @@
        ELEMENTS
        ========================================== */
 
+    const connectButton =
+        document.getElementById("connect-button");
+
+    const disconnectButton =
+        document.getElementById("disconnect-button");
+
     const status =
         document.getElementById("wallet-status");
 
     const address =
         document.getElementById("wallet-address");
 
-    const disconnectButton =
-        document.getElementById("disconnect-button");
-
-
-    let closing = false;
+    const errorBox =
+        document.getElementById("error");
 
 
     /* ==========================================
-       RETURN TO TELEGRAM
+       HIDE ERROR
        ========================================== */
 
-    function returnToTelegram() {
+    function clearError() {
 
-        if (closing) {
-            return;
-        }
+        errorBox.style.display =
+            "none";
 
-        closing = true;
-
-
-        status.textContent =
-            "Connected ✅";
-
-
-        /*
-         * METHOD 1
-         * Standard Telegram close
-         */
-
-        if (tg) {
-
-            try {
-                tg.ready();
-            } catch (e) {}
-
-            try {
-                tg.close();
-            } catch (e) {}
-
-        }
-
-
-        /*
-         * METHOD 2
-         * Retry after short delay
-         */
-
-        setTimeout(function() {
-
-            if (tg) {
-
-                try {
-                    tg.close();
-                } catch (e) {}
-
-            }
-
-        }, 500);
-
-
-        /*
-         * METHOD 3
-         * Final retry
-         */
-
-        setTimeout(function() {
-
-            if (tg) {
-
-                try {
-                    tg.close();
-                } catch (e) {}
-
-            }
-
-        }, 1200);
+        errorBox.textContent =
+            "";
 
     }
 
 
     /* ==========================================
-       WALLET STATUS
+       SHOW ERROR
        ========================================== */
 
-    tonConnectUI.onStatusChange(function(wallet) {
+    function showError(message) {
 
-        if (wallet && wallet.account) {
+        errorBox.style.display =
+            "block";
 
-            status.textContent =
-                "Connected ✅";
+        errorBox.textContent =
+            message;
 
-
-            address.textContent =
-                wallet.account.address;
-
-
-            disconnectButton.style.display =
-                "block";
+    }
 
 
-            /*
-             * Wallet successfully connected.
-             * Return user to Telegram.
-             */
+    /* ==========================================
+       CLOSE TELEGRAM MINI APP
+       ========================================== */
 
-            setTimeout(function() {
+    function closeTelegramMiniApp() {
 
-                returnToTelegram();
+        if (!tg) {
 
-            }, 300);
-
-
-        } else {
-
-            status.textContent =
-                "Not connected";
-
-
-            address.textContent =
-                "—";
-
-
-            disconnectButton.style.display =
-                "none";
-
-
-            closing = false;
+            return;
 
         }
 
-    });
+
+        try {
+
+            tg.close();
+
+        } catch (error) {
+
+            console.error(
+                "Telegram close error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================
+       CONNECT WALLET
+       ========================================== */
+
+    connectButton.addEventListener(
+        "click",
+        async function() {
+
+            clearError();
+
+            connectButton.disabled =
+                true;
+
+            connectButton.textContent =
+                "Connecting...";
+
+            status.textContent =
+                "Connecting...";
+
+
+            try {
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * Wait for the actual
+                 * ConnectedWallet result.
+                 */
+
+                const wallet =
+                    await tonConnectUI.connectWallet();
+
+
+                if (
+                    wallet &&
+                    wallet.account
+                ) {
+
+                    status.textContent =
+                        "Connected ✅";
+
+
+                    address.textContent =
+                        wallet.account.address;
+
+
+                    disconnectButton.style.display =
+                        "block";
+
+
+                    connectButton.style.display =
+                        "none";
+
+
+                    /*
+                     * Connection is confirmed.
+                     *
+                     * Now close Telegram Mini App.
+                     */
+
+                    setTimeout(
+                        function() {
+
+                            closeTelegramMiniApp();
+
+                        },
+                        300
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Wallet connection error:",
+                    error
+                );
+
+
+                status.textContent =
+                    "Not connected";
+
+
+                connectButton.disabled =
+                    false;
+
+                connectButton.textContent =
+                    "🔗 Connect Wallet";
+
+
+                /*
+                 * Do not show an error if
+                 * the user simply cancelled.
+                 */
+
+                if (
+                    error &&
+                    error.message
+                ) {
+
+                    showError(
+                        error.message
+                    );
+
+                }
+
+            }
+
+        }
+    );
 
 
     /* ==========================================
@@ -406,9 +477,31 @@
 
             try {
 
-                closing = false;
-
                 await tonConnectUI.disconnect();
+
+
+                status.textContent =
+                    "Not connected";
+
+
+                address.textContent =
+                    "—";
+
+
+                disconnectButton.style.display =
+                    "none";
+
+
+                connectButton.style.display =
+                    "block";
+
+
+                connectButton.disabled =
+                    false;
+
+                connectButton.textContent =
+                    "🔗 Connect Wallet";
+
 
             } catch (error) {
 
@@ -416,6 +509,39 @@
                     "Disconnect error:",
                     error
                 );
+
+            }
+
+        }
+    );
+
+
+    /* ==========================================
+       RESTORE EXISTING CONNECTION
+       ========================================== */
+
+    tonConnectUI.onStatusChange(
+        function(wallet) {
+
+            if (
+                wallet &&
+                wallet.account
+            ) {
+
+                status.textContent =
+                    "Connected ✅";
+
+
+                address.textContent =
+                    wallet.account.address;
+
+
+                disconnectButton.style.display =
+                    "block";
+
+
+                connectButton.style.display =
+                    "none";
 
             }
 
