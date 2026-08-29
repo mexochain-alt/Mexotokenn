@@ -39,37 +39,37 @@
             width: 92%;
             max-width: 400px;
             text-align: center;
-            padding: 12px 10px;
+            padding: 10px;
         }
 
         .logo {
-            width: 58px;
-            height: 58px;
+            width: 55px;
+            height: 55px;
             object-fit: contain;
-            border-radius: 15px;
-            margin-bottom: 6px;
+            border-radius: 14px;
+            margin-bottom: 5px;
         }
 
         h1 {
-            font-size: 28px;
-            margin: 0 0 4px;
+            font-size: 27px;
+            margin: 0 0 3px;
         }
 
         .subtitle {
-            font-size: 15px;
+            font-size: 14px;
             color: #cccccc;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         #connect-button {
             width: 100%;
-            max-width: 260px;
-            padding: 12px 18px;
+            max-width: 250px;
+            padding: 11px 18px;
             border: none;
-            border-radius: 12px;
+            border-radius: 11px;
             background: #ffffff;
             color: #111111;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -80,84 +80,137 @@
 
         #disconnect-button {
             display: none;
-            margin: 8px auto 10px;
-            padding: 8px 18px;
+            margin: 7px auto 9px;
+            padding: 7px 17px;
             border: none;
-            border-radius: 10px;
+            border-radius: 9px;
             background: #333333;
             color: #ffffff;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
         }
 
+        /* ==========================================
+           SECURITY BOX
+           ========================================== */
+
         .security {
             border: 1px solid #f1c40f;
-            border-radius: 10px;
-            padding: 8px 10px;
-            margin: 12px 0;
-            font-size: 11px;
-            line-height: 1.35;
+            border-radius: 9px;
+            padding: 7px 9px;
+            margin: 10px 0;
+            font-size: 10px;
+            line-height: 1.3;
             color: #dddddd;
+
+            animation: securityPulse 2s infinite;
         }
 
         .security strong {
             color: #ffffff;
-            font-size: 12px;
+            font-size: 11px;
         }
+
+        @keyframes securityPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 7px #f1c40f;
+            }
+
+            50% {
+                opacity: 0.45;
+                box-shadow: 0 0 2px #f1c40f;
+            }
+        }
+
+        /* ==========================================
+           GREEN INSTRUCTION BOX
+           ========================================== */
+
+        .copy-instruction {
+            display: none;
+
+            background: #1f8f45;
+            color: #ffffff;
+
+            border-radius: 10px;
+
+            padding: 8px 10px;
+
+            margin: 8px 0;
+
+            font-size: 11px;
+            font-weight: bold;
+
+            line-height: 1.3;
+        }
+
+        /* ==========================================
+           CARDS
+           ========================================== */
 
         .card {
             background: #1d1d1d;
-            border-radius: 12px;
-            padding: 11px 12px;
-            margin-top: 8px;
+            border-radius: 11px;
+            padding: 9px 11px;
+            margin-top: 7px;
         }
 
         .label {
             color: #888888;
-            font-size: 11px;
-            margin-bottom: 5px;
+            font-size: 10px;
+            margin-bottom: 4px;
         }
 
         .value {
-            font-size: 14px;
+            font-size: 13px;
             word-break: break-all;
         }
 
         #wallet-address {
             color: #ffffff;
-            font-size: 12px;
-            line-height: 1.3;
-            margin-bottom: 9px;
+            font-size: 11px;
+            line-height: 1.25;
+            margin-bottom: 7px;
         }
 
         #copy-button {
             display: none;
+
             width: 100%;
-            padding: 9px;
+
+            padding: 8px;
+
             border: none;
-            border-radius: 9px;
+            border-radius: 8px;
+
             background: #333333;
             color: #ffffff;
-            font-size: 13px;
-            cursor: pointer;
-        }
 
-        #copy-button:active {
-            background: #444444;
+            font-size: 12px;
+
+            cursor: pointer;
         }
 
         #copy-message {
             display: none;
-            margin-top: 6px;
-            font-size: 11px;
+
+            margin-top: 5px;
+
+            font-size: 10px;
             color: #8cff8c;
         }
 
         #error {
             display: none;
-            margin-top: 8px;
+
+            margin-top: 6px;
+
             color: #ff6b6b;
-            font-size: 12px;
+
+            font-size: 11px;
         }
     </style>
 </head>
@@ -192,8 +245,11 @@
     <div id="error"></div>
 
     <div class="security">
-        <strong>🔒 Secure</strong><br>
+
+        <strong>🔒 Secure Connection</strong><br>
+
         Never share your recovery phrase or private key.
+
     </div>
 
     <div class="card">
@@ -207,6 +263,16 @@
             id="wallet-status">
             Not connected
         </div>
+
+    </div>
+
+    <!-- GREEN INSTRUCTION -->
+
+    <div
+        class="copy-instruction"
+        id="copy-instruction">
+
+        📋 Copy your wallet address and paste it in the bot.
 
     </div>
 
@@ -225,7 +291,9 @@
         <button
             id="copy-button"
             type="button">
+
             📋 Copy Wallet Address
+
         </button>
 
         <div id="copy-message">
@@ -303,6 +371,9 @@
     const copyMessage =
         document.getElementById("copy-message");
 
+    const copyInstruction =
+        document.getElementById("copy-instruction");
+
     const errorBox =
         document.getElementById("error");
 
@@ -362,11 +433,6 @@
                 );
 
             } catch (error) {
-
-                /*
-                 * Fallback for browsers where
-                 * Clipboard API is unavailable.
-                 */
 
                 const textarea =
                     document.createElement("textarea");
@@ -448,11 +514,6 @@
                         "Connected ✅";
 
 
-                    /*
-                     * TON Connect provides the
-                     * connected wallet address here.
-                     */
-
                     address.textContent =
                         wallet.account.address;
 
@@ -466,6 +527,10 @@
 
 
                     copyButton.style.display =
+                        "block";
+
+
+                    copyInstruction.style.display =
                         "block";
 
                 }
@@ -531,6 +596,10 @@
                     "none";
 
 
+                copyInstruction.style.display =
+                    "none";
+
+
                 disconnectButton.style.display =
                     "none";
 
@@ -560,7 +629,7 @@
 
 
     /* ==========================================
-       RESTORE EXISTING CONNECTION
+       RESTORE CONNECTION
        ========================================== */
 
     tonConnectUI.onStatusChange(
@@ -588,6 +657,10 @@
 
 
                 copyButton.style.display =
+                    "block";
+
+
+                copyInstruction.style.display =
                     "block";
 
             }
