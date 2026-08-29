@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>MEXO Wallet Connect</title>
 
@@ -82,6 +84,7 @@
             font-size: 14px;
             line-height: 1.5;
             color: #eeeeee;
+
             animation: securityLight 2s infinite;
         }
 
@@ -141,188 +144,285 @@
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <img
-            class="logo"
-            src="https://mexochain-alt.github.io/Mexotokenn/logo.png"
-            alt="MEXO">
+    <img
+        class="logo"
+        src="https://mexochain-alt.github.io/Mexotokenn/logo.png"
+        alt="MEXO">
 
-        <h1>MEXO</h1>
+    <h1>MEXO</h1>
 
-        <div class="subtitle">
-            Connect your TON wallet
+    <div class="subtitle">
+        Connect your TON wallet
+    </div>
+
+    <div id="ton-connect"></div>
+
+    <button
+        id="disconnect-button"
+        type="button">
+        Disconnect Wallet
+    </button>
+
+    <div class="security">
+
+        <strong>🔒 Secure Connection</strong>
+
+        Your wallet connection is handled securely by TON Connect.
+        MEXO never asks for your recovery phrase or private key.
+
+    </div>
+
+    <div class="card">
+
+        <div class="label">
+            WALLET STATUS
         </div>
 
-        <div id="ton-connect"></div>
-
-        <button
-            id="disconnect-button"
-            type="button">
-            Disconnect Wallet
-        </button>
-
-        <div class="security">
-
-            <strong>🔒 Secure Connection</strong>
-
-            Your wallet connection is handled securely by TON Connect.
-            MEXO never asks for your recovery phrase or private key.
-
-        </div>
-
-        <div class="card">
-
-            <div class="label">
-                WALLET STATUS
-            </div>
-
-            <div
-                class="value"
-                id="wallet-status">
-                Not connected
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="label">
-                WALLET ADDRESS
-            </div>
-
-            <div
-                class="value"
-                id="wallet-address">
-                —
-            </div>
-
+        <div
+            class="value"
+            id="wallet-status">
+            Not connected
         </div>
 
     </div>
 
+    <div class="card">
 
-    <script>
+        <div class="label">
+            WALLET ADDRESS
+        </div>
 
-        const MANIFEST_URL =
-            "https://mexochain-alt.github.io/Mexotokenn/tonconnect-manifest.json";
+        <div
+            class="value"
+            id="wallet-address">
+            —
+        </div>
 
+    </div>
 
-        const tonConnectUI =
-            new TON_CONNECT_UI.TonConnectUI({
-
-                manifestUrl: MANIFEST_URL,
-
-                buttonRootId: "ton-connect"
-
-            });
-
-
-        const status =
-            document.getElementById("wallet-status");
-
-        const address =
-            document.getElementById("wallet-address");
-
-        const disconnectButton =
-            document.getElementById("disconnect-button");
+</div>
 
 
-        let walletConnected = false;
+<script>
+
+    /* ==========================================
+       TELEGRAM WEB APP
+       ========================================== */
+
+    const tg =
+        window.Telegram &&
+        window.Telegram.WebApp
+            ? window.Telegram.WebApp
+            : null;
 
 
-        tonConnectUI.onStatusChange(function(wallet) {
+    if (tg) {
 
-            if (wallet && wallet.account) {
+        try {
+            tg.ready();
+        } catch (e) {
+            console.error(e);
+        }
 
-                status.textContent =
-                    "Connected ✅";
+        try {
+            tg.expand();
+        } catch (e) {
+            console.error(e);
+        }
 
-                address.textContent =
-                    wallet.account.address;
-
-                disconnectButton.style.display =
-                    "block";
-
-                walletConnected = true;
-
-
-                /*
-                 * Return to Telegram after
-                 * successful wallet connection.
-                 */
-
-                setTimeout(function() {
-
-                    if (
-                        window.Telegram &&
-                        Telegram.WebApp
-                    ) {
-
-                        Telegram.WebApp.close();
-
-                    }
-
-                }, 800);
+    }
 
 
-            } else {
+    /* ==========================================
+       TON CONNECT
+       ========================================== */
 
-                status.textContent =
-                    "Not connected";
+    const MANIFEST_URL =
+        "https://mexochain-alt.github.io/Mexotokenn/tonconnect-manifest.json";
 
-                address.textContent =
-                    "—";
 
-                disconnectButton.style.display =
-                    "none";
+    const tonConnectUI =
+        new TON_CONNECT_UI.TonConnectUI({
 
-                walletConnected = false;
+            manifestUrl: MANIFEST_URL,
 
-            }
+            buttonRootId: "ton-connect"
 
         });
 
 
-        disconnectButton.addEventListener(
-            "click",
-            async function() {
+    /* ==========================================
+       ELEMENTS
+       ========================================== */
 
-                try {
+    const status =
+        document.getElementById("wallet-status");
 
-                    walletConnected = false;
+    const address =
+        document.getElementById("wallet-address");
 
-                    await tonConnectUI.disconnect();
+    const disconnectButton =
+        document.getElementById("disconnect-button");
 
-                } catch (error) {
 
-                    console.error(
-                        "Disconnect error:",
-                        error
-                    );
+    let closing = false;
 
-                }
 
-            }
-        );
+    /* ==========================================
+       RETURN TO TELEGRAM
+       ========================================== */
+
+    function returnToTelegram() {
+
+        if (closing) {
+            return;
+        }
+
+        closing = true;
+
+
+        status.textContent =
+            "Connected ✅";
 
 
         /*
-         * Initialize Telegram WebApp
+         * METHOD 1
+         * Standard Telegram close
          */
 
-        if (
-            window.Telegram &&
-            Telegram.WebApp
-        ) {
+        if (tg) {
 
-            Telegram.WebApp.ready();
+            try {
+                tg.ready();
+            } catch (e) {}
 
-            Telegram.WebApp.expand();
+            try {
+                tg.close();
+            } catch (e) {}
 
         }
 
-    </script>
+
+        /*
+         * METHOD 2
+         * Retry after short delay
+         */
+
+        setTimeout(function() {
+
+            if (tg) {
+
+                try {
+                    tg.close();
+                } catch (e) {}
+
+            }
+
+        }, 500);
+
+
+        /*
+         * METHOD 3
+         * Final retry
+         */
+
+        setTimeout(function() {
+
+            if (tg) {
+
+                try {
+                    tg.close();
+                } catch (e) {}
+
+            }
+
+        }, 1200);
+
+    }
+
+
+    /* ==========================================
+       WALLET STATUS
+       ========================================== */
+
+    tonConnectUI.onStatusChange(function(wallet) {
+
+        if (wallet && wallet.account) {
+
+            status.textContent =
+                "Connected ✅";
+
+
+            address.textContent =
+                wallet.account.address;
+
+
+            disconnectButton.style.display =
+                "block";
+
+
+            /*
+             * Wallet successfully connected.
+             * Return user to Telegram.
+             */
+
+            setTimeout(function() {
+
+                returnToTelegram();
+
+            }, 300);
+
+
+        } else {
+
+            status.textContent =
+                "Not connected";
+
+
+            address.textContent =
+                "—";
+
+
+            disconnectButton.style.display =
+                "none";
+
+
+            closing = false;
+
+        }
+
+    });
+
+
+    /* ==========================================
+       DISCONNECT
+       ========================================== */
+
+    disconnectButton.addEventListener(
+        "click",
+        async function() {
+
+            try {
+
+                closing = false;
+
+                await tonConnectUI.disconnect();
+
+            } catch (error) {
+
+                console.error(
+                    "Disconnect error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+</script>
 
 </body>
 </html>
