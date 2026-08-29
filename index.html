@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEXO Airdrop</title>
-    <!-- Load libraries as fast as possible -->
+    <!-- ۱. استفاده از نسخه پایدار و مستقیم -->
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -13,41 +13,23 @@
             text-align: center; 
             padding: 0; 
             margin: 0;
-            background: #1a1a1a; 
+            background: radial-gradient(circle at top, #202b45 0%, #0b1020 55%, #070a12 100%);
             color: white; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh; /* صفحه را تمام صفحه می‌کند */
+            height: 100vh;
         }
-        .container {
-            width: 90%;
-            max-width: 400px;
-        }
-        .logo {
-            width: 100px;
-            height: auto;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
-        }
-        h1 {
-            font-size: 24px;
-            margin: 10px 0;
-            color: #00e676;
-        }
-        p {
-            color: #aaaaaa;
-            font-size: 14px;
-            margin-bottom: 40px;
-        }
-        /* ایجاد یک فضای مشخص برای دکمه جهت جلوگیری از پرش صفحه */
+        .container { width: 90%; max-width: 400px; }
+        .logo { width: 100px; height: auto; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0, 230, 118, 0.2); }
+        h1 { font-size: 24px; margin: 10px 0; color: #00e676; }
+        p { color: #aaaaaa; font-size: 14px; margin-bottom: 40px; }
         #ton-connect-button { 
             width: 100%;
             display: flex;
             justify-content: center;
-            min-height: 50px;
+            min-height: 60px; /* کمی بیشتر برای جلوگیری از پرش */
         }
     </style>
 </head>
@@ -56,21 +38,20 @@
         <img src="logo.png" alt="MEXO Logo" class="logo">
         <h1>MEXO Airdrop</h1>
         <p>Connect your TON wallet to claim rewards</p>
-        
         <div id="ton-connect-button"></div>
     </div>
 
     <script>
-        // فوری اجرا شدن اسکریپت
         (function() {
             const tg = window.Telegram.WebApp;
+            tg.ready();
             tg.expand();
 
-            // تابع اصلی برای راه اندازی
             function initTonConnect() {
                 try {
+                    // اصلاح اصلی: استفاده از Manifest خود پروژه به جای لینک خارجی گیت‌هاب
                     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                        manifestUrl: 'https://raw.githubusercontent.com/ton-connect/demo-dapp-with-wallet/main/public/tonconnect-manifest.json',
+                        manifestUrl: 'https://mexochain-alt.github.io/mexotoken/tonconnect-manifest.json',
                         buttonRootId: 'ton-connect-button'
                     });
 
@@ -79,7 +60,6 @@
                             const address = wallet.account.address;
                             console.log("Wallet connected:", address);
                             
-                            // ارسال دیتا به ربات با کمی تاخیر برای اطمینان از بسته نشدن
                             setTimeout(() => {
                                 tg.sendData(JSON.stringify({
                                     action: 'connect_wallet',
@@ -93,7 +73,6 @@
                 }
             }
 
-            // اگر صفحه لود شده بود، سریع اجرا کن، وگرنه منتظر بمان
             if (document.readyState === 'complete') {
                 initTonConnect();
             } else {
